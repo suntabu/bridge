@@ -23,27 +23,32 @@ public class GoogleApi : MonoBehaviour {
 	public int scale;
 
 
-	IEnumerator Map()
+	IEnumerator Map(string url)
 	{
-		url = "https://maps.googleapis.com/maps/api/staticmap?center=" + lat + "," + lon +
-			"&zoom=" + zoom + "&size=" + mapWidth + "x" + mapHeight + "&scale=" + scale 
-			+"&maptype=" + mapSelected +
-			"&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=AIzaSyBmxuuvJUXB7PrBau5zfea1nBSzmapKHEE";
-		
 		Debug.Log(url);
 		WWW www = new WWW (url);
 		yield return www;
-//		img.material.mainTexture = www.texture;
+		img.material.mainTexture = www.texture;
 
 	}
 	// Use this for initialization
 	void Start () {
 		img = gameObject.GetComponent<MeshRenderer> ();
-		StartCoroutine (Map());
+		StartCoroutine (Map(url));
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () {			
+		var newurl = "https://maps.googleapis.com/maps/api/staticmap?center=" + lat + "," + lon +
+		      "&zoom=" + zoom + "&size=" + mapWidth + "x" + mapHeight + "&scale=" + scale 
+		      +"&maptype=" + mapSelected +
+		      "&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318&markers=color:red%7Clabel:C%7C40.718217,-73.998284&key=AIzaSyBmxuuvJUXB7PrBau5zfea1nBSzmapKHEE";
+
+		if (url != newurl)
+		{
+			url = newurl;
+			StartCoroutine (Map(url));
+		}
 		
 	}
 }
