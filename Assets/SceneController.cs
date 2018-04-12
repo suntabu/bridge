@@ -80,7 +80,7 @@ public class SceneController : CacheBehaviour
                 b = new Vector3(b.x, mCurrentFocus.y, b.z);
             }
 //            camera.transform.localPosition = b;
-            camera.transform.localPosition = Vector3.Lerp(a, b, Time.deltaTime * 3);
+            camera.transform.localPosition = Vector3.Lerp(a, b, Time.deltaTime * 4);
             camera.transform.LookAt(mCurrentFocus);
         }
 
