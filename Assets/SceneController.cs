@@ -6,8 +6,8 @@ using UnityToolbag.CoordinateSystems.SphericalCoordinate;
 
 public class SceneController : CacheBehaviour
 {
-    private static readonly Vector3 pos = new Vector3(12f, 139.74f, -208f);
-    private static readonly Vector3 dir = new Vector3(1,0, 0);
+    private static readonly Vector3 pos = new Vector3(0, 0.121f, 0);
+    private static readonly Vector3 dir = new Vector3(1, -1, 0);
 
 
     private Vector3 mCurrentFocus;
@@ -31,11 +31,11 @@ public class SceneController : CacheBehaviour
 
     IEnumerator Start()
     {
-        mCurrentFocus = new Vector3(500,0,500);
-        yield return CameraActions.FocusAtCoroutine(camera, mCurrentFocus, dir,50, .5f, t =>
+        mCurrentFocus = pos;
+        yield return CameraActions.FocusAtCoroutine(camera, pos, dir, 80, .5f, t =>
         {
             ShowUI();
-            
+
             mSphericalPos = SphericalCoordinateSystem.FromCartesian(camera.transform.localPosition - mCurrentFocus);
         });
 
@@ -59,24 +59,34 @@ public class SceneController : CacheBehaviour
             {
                 var delta = RATIO * (Input.mousePosition - mLastPos);
 
-                mSphericalPos.phi += delta.x;
+                mSphericalPos.phi -= delta.x;
                 mSphericalPos.theta += delta.y;
 
+                if (mSphericalPos.theta < 0.15f * Mathf.PI)
+                {
+//                    Debug.LogError("Cs");
+                    mSphericalPos.theta = Mathf.PI * 0.15f;
+                }
 
-                Debug.Log(delta + "   " + mSphericalPos);
+//                Debug.Log(delta + "   " + mSphericalPos);
             }
 
             mLastPos = Input.mousePosition;
             var a = camera.transform.localPosition;
             var b = SphericalCoordinateSystem.ToCartesian(mSphericalPos) + mCurrentFocus;
 
-            if (b.y <= a.y)
+            if (b.y <= mCurrentFocus.y)
             {
-                b = new Vector3(b.x,a.y,b.z);
+                b = new Vector3(b.x, mCurrentFocus.y, b.z);
             }
-            
-            camera.transform.localPosition = b;//Vector3.Lerp(a, b, Time.deltaTime);
+//            camera.transform.localPosition = b;
+            camera.transform.localPosition = Vector3.Lerp(a, b, Time.deltaTime * 3);
             camera.transform.LookAt(mCurrentFocus);
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            mLastPos = Vector3.zero;
         }
     }
 }

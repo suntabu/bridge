@@ -34,7 +34,7 @@ public class GoogleApi : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		img = gameObject.GetComponent<MeshRenderer> ();
-		StartCoroutine (Map(url));
+//		StartCoroutine (Map(url));
 	}
 	
 	// Update is called once per frame
@@ -47,7 +47,7 @@ public class GoogleApi : MonoBehaviour {
 		if (url != newurl)
 		{
 			url = newurl;
-			StartCoroutine (Map(url));
+//			StartCoroutine (Map(url));
 		}
 		
 	}
