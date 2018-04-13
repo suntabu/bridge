@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityToolbag;
 using UnityToolbag.CoordinateSystems.SphericalCoordinate;
+using UnityToolbag.EventTrigger;
+using UnityToolBag.Utils;
 
 public class SceneController : CacheBehaviour
 {
@@ -16,17 +18,34 @@ public class SceneController : CacheBehaviour
     {
         new FocusInfo()
         {
-            pos = new Vector3()
+            pos = new Vector3(7.48f, 1.82f, -19.01f),
+            desc = "bad...",
+            dir = new Vector3(0, 0, 1),
+            dist = 10
+        },
+
+        new FocusInfo()
+        {
+            pos = new Vector3(44.48f, 7.13f, -19.01f),
+            desc = "bad...",
+            dir = new Vector3(-1, 0, 0),
+            dist = 10
         },
     };
 
+
+    private List<RectTransform> m_Icons = new List<RectTransform>();
 
     struct FocusInfo
     {
         public Vector3 pos;
         public Vector3 dir;
         public string desc;
+        public float dist;
     }
+
+
+    public RectTransform FloatingRoot;
 
 
     IEnumerator Start()
@@ -44,16 +63,54 @@ public class SceneController : CacheBehaviour
 
     void ShowUI()
     {
+        m_Icons.Clear();
+        var floatIconPrefab = Resources.Load<GameObject>("FloatIcon");
+        foreach (var focusInfo in infos)
+        {
+            var go = Instantiate(floatIconPrefab);
+            go.transform.SetParent(FloatingRoot);
+
+            m_Icons.Add(go.GetComponent<RectTransform>());
+
+            EventTriggerListener.Get(go).OnClick += (o, data) =>
+            {
+                mSphericalPos.r = focusInfo.dist;
+                mCurrentFocus = focusInfo.pos;
+                CameraActions.FocusAt(Camera.main, focusInfo.pos, focusInfo.dir, focusInfo.dist, .5f, t =>
+                {
+                    
+                });
+            };
+        }
+
+        UpdateUI();
+    }
+
+    void UpdateUI()
+    {
+        for (var index = 0; index < m_Icons.Count; index++)
+        {
+            var focusInfo = infos[index];
+            var go = m_Icons[index];
+            var pos = Camera.main.WorldToScreenPoint(focusInfo.pos) - .5f * new Vector3(Screen.width, Screen.height);
+            go.anchoredPosition = pos;
+        }
     }
 
     private const float RATIO = 0.005f;
 
     private SphericalCoordinateSystem.SphericalCoordinate mSphericalPos;
     private Vector3 mLastPos;
+    private bool mIsDown;
 
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0) && !InputUtils.CheckMouseOnUI())
+        {
+            mIsDown = true;
+        }
+
+        if (Input.GetMouseButton(0) && mIsDown)
         {
             if (mLastPos != Vector3.zero)
             {
@@ -87,6 +144,9 @@ public class SceneController : CacheBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             mLastPos = Vector3.zero;
+            mIsDown = false;
         }
+
+        UpdateUI();
     }
 }
