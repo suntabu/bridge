@@ -6,5 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/bridge.unity
+    path: Assets/Scenes/Login/login.unity
+    guid: 0fe506fb63b9d0241a94701d111000a5
+  - enabled: 1
+    path: Assets/Scenes/Dashboard/dashboard.unity
     guid: 4014e7d76425345b6a1ecc88b4a37272

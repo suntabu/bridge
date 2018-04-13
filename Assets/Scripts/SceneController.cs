@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityToolbag;
 using UnityToolbag.CoordinateSystems.SphericalCoordinate;
 using UnityToolbag.EventTrigger;
@@ -46,10 +48,12 @@ public class SceneController : CacheBehaviour
 
 
     public RectTransform FloatingRoot;
+    public RectTransform BackBtn;
 
 
     IEnumerator Start()
     {
+        BackBtn.GetComponent<Image>().color = new Color(1, 1, 1, 0);
         mCurrentFocus = pos;
         yield return CameraActions.FocusAtCoroutine(camera, pos, dir, 80, .5f, t =>
         {
@@ -63,6 +67,22 @@ public class SceneController : CacheBehaviour
 
     void ShowUI()
     {
+        EventTriggerListener.Get(BackBtn.gameObject).OnClick += (go, data) =>
+        {
+            mCurrentFocus = pos;
+            mSphericalPos.r = 80;
+
+
+            CameraActions.FocusAt(camera, mCurrentFocus, dir, mSphericalPos.r, .5f, t =>
+            {
+                foreach (var mIcon in m_Icons)
+                {
+                    mIcon.GetComponent<Image>().DOFade(1, .5f);
+                }
+            });
+        };
+
+
         m_Icons.Clear();
         var floatIconPrefab = Resources.Load<GameObject>("FloatIcon");
         foreach (var focusInfo in infos)
@@ -74,12 +94,16 @@ public class SceneController : CacheBehaviour
 
             EventTriggerListener.Get(go).OnClick += (o, data) =>
             {
+                BackBtn.GetComponent<Image>().DOFade(1, .5f);
+
+                foreach (var mIcon in m_Icons)
+                {
+                    mIcon.GetComponent<Image>().DOFade(0, .5f);
+                }
+
                 mSphericalPos.r = focusInfo.dist;
                 mCurrentFocus = focusInfo.pos;
-                CameraActions.FocusAt(Camera.main, focusInfo.pos, focusInfo.dir, focusInfo.dist, .5f, t =>
-                {
-                    
-                });
+                CameraActions.FocusAt(Camera.main, focusInfo.pos, focusInfo.dir, focusInfo.dist, .5f, t => { });
             };
         }
 
