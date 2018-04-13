@@ -20,17 +20,120 @@ public class SceneController : CacheBehaviour
     {
         new FocusInfo()
         {
-            pos = new Vector3(7.48f, 1.82f, -19.01f),
-            desc = "bad...",
+            pos = new Vector3(-58.91f, 1.82f, -7.35f),
+            desc = "1号观测位",
             dir = new Vector3(0, 0, 1),
+            dist = 10
+        },
+        
+        new FocusInfo()
+        {
+            pos = new Vector3(-43.1f, 1.82f, -10.38f),
+            desc = "2号观测位",
+            dir = new Vector3(0, 0, 1),
+            dist = 10
+        },
+        
+        new FocusInfo()
+        {
+            pos = new Vector3(-28.32f, 1.82f, -13.76f),
+            desc = "3号观测位",
+            dir = new Vector3(0, 0, 1),
+            dist = 10
+        },
+        
+        new FocusInfo()
+        {
+            pos = new Vector3(7.48f, 1.82f, -19.01f),
+            desc = "4号观测位",
+            dir = new Vector3(0, 0, 1),
+            dist = 10
+        },
+        
+        new FocusInfo()
+        {
+            pos = new Vector3(21.79f, 1.82f, -21.6f),
+            desc = "5号观测位",
+            dir = new Vector3(0, 0, 1),
+            dist = 10
+        },
+        
+        new FocusInfo()
+        {
+            pos = new Vector3(38.05f, 1.82f, -24.249f),
+            desc = "6号观测位",
+            dir = new Vector3(0, 0, 1),
+            dist = 10
+        },
+        
+        new FocusInfo()
+        {
+            pos = new Vector3(41.7f, 2.3f, -3.751f),
+            desc = "7号观测位",
+            dir = new Vector3(0, 0, -1),
+            dist = 10
+        },
+        
+        new FocusInfo()
+        {
+            pos = new Vector3(25.4f, 2.3f, -0.6f),
+            desc = "8号观测位",
+            dir = new Vector3(0, 0, -1),
+            dist = 10
+        },
+        
+        new FocusInfo()
+        {
+            pos = new Vector3(10.476f, 2.3f, 1.658f),
+            desc = "9号观测位",
+            dir = new Vector3(0, 0, -1),
+            dist = 10
+        },
+        
+        new FocusInfo()
+        {
+            pos = new Vector3(-24.7f, 2.3f, 7.692f),
+            desc = "10号观测位",
+            dir = new Vector3(0, 0, -1),
+            dist = 10
+        },
+        
+        new FocusInfo()
+        {
+            pos = new Vector3(-39.5f, 2.3f, 10.6f),
+            desc = "11号观测位",
+            dir = new Vector3(0, 0, -1),
+            dist = 10
+        },
+        
+        new FocusInfo()
+        {
+            pos = new Vector3(-55.3f, 2.3f, 13.11f),
+            desc = "12号观测位",
+            dir = new Vector3(0, 0, -1),
             dist = 10
         },
 
         new FocusInfo()
         {
             pos = new Vector3(44.48f, 7.13f, -19.01f),
-            desc = "bad...",
+            desc = "13号观测位...",
             dir = new Vector3(-1, 0, 0),
+            dist = 10
+        },
+        
+        new FocusInfo()
+        {
+            pos = new Vector3(-59.29f, 8.4f, 2.81f),
+            desc = "14号观测位...",
+            dir = new Vector3(1, 0, 0),
+            dist = 10
+        },
+        new FocusInfo()
+        {
+            pos = new Vector3(-4.5f, 18.64f, -5.6f),
+            desc = "15号观测位...",
+            dir = new Vector3(1, -1, 0),
             dist = 10
         },
     };
