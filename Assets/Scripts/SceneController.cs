@@ -49,10 +49,13 @@ public class SceneController : CacheBehaviour
 
     public RectTransform FloatingRoot;
     public RectTransform BackBtn;
+    public RectTransform bridgeInfo;
+    public Image InfoBtn;
 
 
     IEnumerator Start()
     {
+        bridgeInfo.GetComponent<Image>().color = new Color(1, 1, 1, 0);
         BackBtn.GetComponent<Image>().color = new Color(1, 1, 1, 0);
         mCurrentFocus = pos;
         yield return CameraActions.FocusAtCoroutine(camera, pos, dir, 80, .5f, t =>
@@ -67,12 +70,18 @@ public class SceneController : CacheBehaviour
 
     void ShowUI()
     {
+        EventTriggerListener.Get(InfoBtn.gameObject).OnClick += (go, data) =>
+        {
+            bridgeInfo.GetComponent<Image>().DOFade(1, .3f);
+        };
+        
+        
         EventTriggerListener.Get(BackBtn.gameObject).OnClick += (go, data) =>
         {
             mCurrentFocus = pos;
             mSphericalPos.r = 80;
 
-
+            BackBtn.GetComponent<Image>().DOFade(0, .3f);
             CameraActions.FocusAt(camera, mCurrentFocus, dir, mSphericalPos.r, .5f, t =>
             {
                 foreach (var mIcon in m_Icons)
@@ -132,6 +141,8 @@ public class SceneController : CacheBehaviour
         if (Input.GetMouseButtonDown(0) && !InputUtils.CheckMouseOnUI())
         {
             mIsDown = true;
+
+            bridgeInfo.GetComponent<Image>().DOFade(0, .8f);
         }
 
         if (Input.GetMouseButton(0) && mIsDown)
