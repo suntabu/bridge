@@ -21,95 +21,107 @@ public class SceneController : CacheBehaviour
         new FocusInfo()
         {
             pos = new Vector3(-58.91f, 1.82f, -7.35f),
-            desc = "1号观测位",
+            name = "QDCZ01",
+            desc = "监测数据正常",
             dir = new Vector3(0, 0, 1),
             dist = 10
         },
-        
+
         new FocusInfo()
         {
             pos = new Vector3(-43.1f, 1.82f, -10.38f),
-            desc = "2号观测位",
+            name = "QDCZ02",
+            desc = "监测数据正常",
             dir = new Vector3(0, 0, 1),
             dist = 10
         },
-        
+
         new FocusInfo()
         {
             pos = new Vector3(-28.32f, 1.82f, -13.76f),
-            desc = "3号观测位",
+            name = "QDCZ03",
+            desc = "监测数据正常",
             dir = new Vector3(0, 0, 1),
             dist = 10
         },
-        
+
         new FocusInfo()
         {
             pos = new Vector3(7.48f, 1.82f, -19.01f),
-            desc = "4号观测位",
+            name = "QDCZ04",
+            desc = "监测数据正常",
             dir = new Vector3(0, 0, 1),
             dist = 10
         },
-        
+
         new FocusInfo()
         {
             pos = new Vector3(21.79f, 1.82f, -21.6f),
-            desc = "5号观测位",
+            name = "QDCZ05",
+            desc = "监测数据正常",
             dir = new Vector3(0, 0, 1),
             dist = 10
         },
-        
+
         new FocusInfo()
         {
             pos = new Vector3(38.05f, 1.82f, -24.249f),
-            desc = "6号观测位",
+            name = "QDCZ06",
+            desc = "监测数据正常",
             dir = new Vector3(0, 0, 1),
             dist = 10
         },
-        
+
         new FocusInfo()
         {
             pos = new Vector3(41.7f, 2.3f, -3.751f),
-            desc = "7号观测位",
+            name = "QDCZ07",
+            desc = "监测数据正常",
             dir = new Vector3(0, 0, -1),
             dist = 10
         },
-        
+
         new FocusInfo()
         {
             pos = new Vector3(25.4f, 2.3f, -0.6f),
-            desc = "8号观测位",
+            name = "QDCZ08",
+            desc = "监测数据正常",
             dir = new Vector3(0, 0, -1),
             dist = 10
         },
-        
+
         new FocusInfo()
         {
             pos = new Vector3(10.476f, 2.3f, 1.658f),
-            desc = "9号观测位",
+            name = "QDCZ09",
+            desc = "监测数据正常",
             dir = new Vector3(0, 0, -1),
             dist = 10
         },
-        
+
         new FocusInfo()
         {
             pos = new Vector3(-24.7f, 2.3f, 7.692f),
-            desc = "10号观测位",
+            name = "QDCZ10",
+            desc = "监测数据正常",
             dir = new Vector3(0, 0, -1),
             dist = 10
         },
-        
+
         new FocusInfo()
         {
             pos = new Vector3(-39.5f, 2.3f, 10.6f),
-            desc = "11号观测位",
+            name = "QDCZ11",
+            desc = "监测数据正常",
             dir = new Vector3(0, 0, -1),
             dist = 10
         },
-        
+
         new FocusInfo()
         {
             pos = new Vector3(-55.3f, 2.3f, 13.11f),
-            desc = "12号观测位",
+            name = "QDCZ12",
+            desc = "监测数据正常",
             dir = new Vector3(0, 0, -1),
             dist = 10
         },
@@ -117,22 +129,25 @@ public class SceneController : CacheBehaviour
         new FocusInfo()
         {
             pos = new Vector3(44.48f, 7.13f, -19.01f),
-            desc = "13号观测位...",
+            name = "QDCZ13",
+            desc = "监测数据正常",
             dir = new Vector3(-1, 0, 0),
             dist = 10
         },
-        
+
         new FocusInfo()
         {
             pos = new Vector3(-59.29f, 8.4f, 2.81f),
-            desc = "14号观测位...",
+            name = "QDCZ014",
+            desc = "监测数据正常",
             dir = new Vector3(1, 0, 0),
             dist = 10
         },
         new FocusInfo()
         {
             pos = new Vector3(-4.5f, 18.64f, -5.6f),
-            desc = "15号观测位...",
+            name = "QDCZ15",
+            desc = "监测数据正常",
             dir = new Vector3(1, -1, 0),
             dist = 10
         },
@@ -147,6 +162,8 @@ public class SceneController : CacheBehaviour
         public Vector3 dir;
         public string desc;
         public float dist;
+        public string name;
+        public string type;
     }
 
 
@@ -154,12 +171,13 @@ public class SceneController : CacheBehaviour
     public RectTransform BackBtn;
     public RectTransform bridgeInfo;
     public Image InfoBtn;
-
+    public InfoPanelScript panelScript;
 
     IEnumerator Start()
     {
         bridgeInfo.GetComponent<Image>().color = new Color(1, 1, 1, 0);
         BackBtn.GetComponent<Image>().color = new Color(1, 1, 1, 0);
+        panelScript.gameObject.SetActive(false);
         mCurrentFocus = pos;
         yield return CameraActions.FocusAtCoroutine(camera, pos, dir, 80, .5f, t =>
         {
@@ -177,13 +195,13 @@ public class SceneController : CacheBehaviour
         {
             bridgeInfo.GetComponent<Image>().DOFade(1, .3f);
         };
-        
-        
+
+
         EventTriggerListener.Get(BackBtn.gameObject).OnClick += (go, data) =>
         {
             mCurrentFocus = pos;
             mSphericalPos.r = 80;
-
+            panelScript.gameObject.SetActive(false);
             BackBtn.GetComponent<Image>().DOFade(0, .3f);
             CameraActions.FocusAt(camera, mCurrentFocus, dir, mSphericalPos.r, .5f, t =>
             {
@@ -206,6 +224,11 @@ public class SceneController : CacheBehaviour
 
             EventTriggerListener.Get(go).OnClick += (o, data) =>
             {
+                panelScript.gameObject.SetActive(true);
+
+                panelScript.SetText(focusInfo.name, focusInfo.pos.y + "m", focusInfo.desc);
+
+
                 BackBtn.GetComponent<Image>().DOFade(1, .5f);
 
                 foreach (var mIcon in m_Icons)
